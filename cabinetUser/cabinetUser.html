@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Личный кабинет</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="js/bootstrap.min.js"></script>
+    </head>
+    
+    <body>
+        <div class="container">
+            <h2>Добро пожаловать в личный кабинет</h2>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#personalInfo">Личная информация</a></li>
+                <li><a data-toggle="tab" href="#myAdverts">Мои обьявления</a></li>
+                <li><a data-toggle="tab" href="#newAdvert">Новое объявление</a></li>
+                <li><a href="main.html">На главную</a></li>
+            </ul>        
+            
+            <div class="tab-content">
+                
+                <div id="personalInfo" class="tab-pane fade in active">
+                    <?php include 'personalInfo.php'; ?>
+                    <div class="form-group">
+                        <br>
+                        <div class="form-group">
+                            <b>Фото:</b>
+                            <br>
+                            <img src="<?php echo $result['photo'];?>" class="img-rounded img-responsive" alt="No Avatar" width="300">
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label for="name">ФИО:</label>
+                            <input type="text" class="form-control" id="name" name="name" disabled value="<?php echo $result['name'];?>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="text" class="form-control" id="email" name="email" disabled value="<?php echo $result['email'];?>">
+                        </div> 
+                        
+                        <div class="form-group">
+                            <label for="phoneNumber">Номер телефона:</label>
+                        <?php if($result["phoneNumber"]){ ?>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" disabled value="<?php echo $result['phoneNumber'];?>">
+                        <?php }else{ ?>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" disabled value="Не указано">
+                        <?php } ?>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phoneNumber">Информация о себе:</label>
+                        <?php if($result["description"]){ ?>
+                            <textarea class="form-control" id="description" name="description" rows="4" disabled><?php echo $result['description'];?></textarea>
+                        <?php }else{ ?>
+                            <input type="text" class="form-control" id="description" name="description" disabled value="Не указано">
+                        <?php } ?>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location">Адрес:</label>
+                        <?php if($result["location"]){ ?>
+                            <input type="text" class="form-control" id="location" name="location" disabled value="<?php echo $result['location'];?>">
+                        <?php }else{ ?>
+                            <input type="text" class="form-control" id="location" name="location" disabled value="Не указано">
+                        <?php } ?>
+                        </div>
+                       
+                    </div>
+                </div>              
+                
+                <div id="myAdverts" class="tab-pane fade">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Номер</th>
+                                <th>Описание</th>
+                                <th>Фото</th>
+                                <th>Что хочу получить взамен</th>
+                                <th>Опубликовано</th>
+                                <th>Информация для связи</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            include 'myAdverts.php';
+                            
+                            if(is_array($result) ) {
+                                foreach($result as $array) {
+                                    $currentId = $array["id"];   
+                                    echo "<tr>";
+                                    echo "<td class=\"col-lg-1\">", $array["id"],"</td>";      
+                                    echo "<td class=\"col-lg-3\">", $array["description"],"</td>";
+                                    if(!$array["photo"]){
+                                        echo "<td class=\"col-lg-1\">", "Фото нет","</td>";
+                                    }else{
+                                         
+                                        echo "<td>"; ?>
+                                        <img src="<?php echo $array['photo'];?>" class="img-rounded img-responsive" alt="No photo" width="300">
+                                        <?php echo "</td>";
+                                    }
+                                    echo "<td class=\"col-lg-3\">", $array["changeFor"],"</td>";
+                                    echo "<td class=\"col-lg-1\">", $array["dateAndTime"],"</td>";
+                                    echo "<td class=\"col-lg-2\">","</td>";
+                                    echo "<form action=\"complaint.php\" method=\"POST\">";
+                                    echo "<td><button type=\"button\" class=\"btn btn-danger\">Изменить</button></td>";
+                                    echo "</form>";
+                                    
+                                    echo"</tr>";
+                                }
+                            }
+                            ?>
+                            </tbody>
+                    </table>   
+                </div>
+                
+                <div id="newAdvert" class="tab-pane fade">
+                    <form enctype="multipart/form-data" action="newAdvert.php" method="post">
+                        <h2>Создание нового обьявления</h2>               
+                        <br>
+                        
+                        <div class="form-group">
+                            <label for="description">Описание:</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" placeholder="Подробно опишите то, что Вы хотите отдать. Чем больше информации Вы предоставите, тем больше вероятность, что с Вами свяжутся."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="changeFor">Что хочу взамен:</label>
+                            <textarea class="form-control" id="changeFor" name="changeFor" rows="4" placeholder="Подробно опишите то, что Вы хотели бы получать взамен."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <b>Фото (прикрепление изображения, максимум 1мб):</b>
+                            <input id="picture" type="file" name="picture" >
+                        </div>
+
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="phoneNumberFlag" value="TRUE">Показывать в объявлении телефон</label>
+                        </div>
+                        
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="emailFlag" value="TRUE">Показывать в объявлении e-mail</label>
+                        </div>
+                        
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="locationFlag" value="TRUE">Показывать в объявлении адрес</label>
+                        </div>
+   
+                        <div class="form-group">
+                            <input type="submit" id="submit" name="submit"  value="Опубликовать" class="btn btn-primary">
+                            <input type="reset" id="reset" name="reset" value="Сбросить" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
