@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Жалоба на объявление</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <form action="complaint.php" method="POST">           
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="complaintId" name="complaintId" value="<?php echo $_POST['complaint'] ?>">
+                </div>                     
+                
+                <div class="form-group">
+                    <label for="description">Текст жалобы:</label>
+                    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                </div>
+        
+                <div class="form-group">
+                    <input id="submit" name="submit" type="submit" value="Опубликовать" class="btn btn-primary">
+                    <input type="reset" id="reset" value="Очистить" class="btn btn-primary">
+                </div>         
+            </form>
+        </div> 
+    </body>
+</html>
