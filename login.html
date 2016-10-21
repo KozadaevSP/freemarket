@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="widht=device-width, initial-scale=1.0">
+        
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="js/bootstrap.min.js"></script>
+        
+        <title>Вход в личный кабинет</title>
+    </head>
+    <body>
+        
+        <div class="container">
+            <form method="post" action="login.php">
+                <h2>Вход в личный кабинет</h2>
+                <br>
+                <div class="form-group">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    <label for="email">E-mail:</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Введите e-mail">
+                </div>
+       
+                <div class="form-group">
+                    <span class="glyphicon glyphicon-eye-close"></span>
+                    <label for="password">Пароль:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+                </div>          
+                
+                <div class="form-group">
+                    <input id="submit" name="submit" type="submit" value="Войти" class="btn btn-primary">
+                    <input type="reset" id="reset" value="Очистить" class="btn btn-primary">
+                </div>
+            </form>
+            
+            <?php session_start(); ?>
+            <?php if(isset($_SESSION["errors"])){ ?>
+            <div class="alert alert-danger">
+                <strong>Внимание!<br></strong>
+                <?php print_r($_SESSION["errors"]); ?>
+                <strong>Введите данные заново!</strong>
+            </div>              
+            <?php } ?>
+            
+        </div>
+    </body>
+</html>
+

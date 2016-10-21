@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="widht=device-width, initial-scale=1.0">
+        
+        <script src="js/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="js/bootstrap.min.js"></script>
+        
+        <title>Freemarket</title>
+    </head>
+    
+    <body>
+         <nav class="navbar navbar-default">
+             <div class="container-fluid">
+                 <div class="navbar-header">
+                     <a class="navbar-brand" href="main.html">Фримаркет (FreeMarket)</a>
+                     
+                 </div>
+                 <ul class="nav navbar-nav navbar-right ">
+                     <?php if(isset($_COOKIE["userId"])){  ?>   
+                     <li><a href="cabinetUser.html"><span class="glyphicon glyphicon-log-in"></span> Личный кабинет</a></li>
+                     <?php }else{ ?>
+                     <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Личный кабинет</a></li>
+                     <?php } ?> 
+                     <li><a href="registration.html"><span class="glyphicon glyphicon-user"></span> Зарегистрироваться</a></li>
+                 </ul>
+             </div>
+         </nav>
+        
+
+        <div class="well">
+           Фримаркет (FreeMarket) - это сервис, где каждый может отдать хорошие вещи бесплатно и получить взамен то, что давно искал, не отдавая денег взамен.
+        </div>
+ 
+  
+        <div class="container-fluid">
+            
+            <table class="table table-hover">
+                <thead>
+                    <div class="page-header">
+                        <h1>Список доступных обьявлений:</h1>     
+                    </div>
+                    <tr>
+                        <th>Номер</th>
+                        <th>Пользователь</th>
+                        <th>Описание</th>
+                        <th>Фото</th>
+                        <th>Что хочу получить взамен</th>
+                        <th>Информация для связи</th>
+                        <th>Опубликовано</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                include 'paginator.php';
+
+                if(is_array($result) ) {
+                    foreach($result as $array) {
+                        $currentId = $array["id"];
+                        echo "<tr>";
+                        echo "<td class=\"col-lg-1\">", $array["id"],"</td>";
+                        echo "<td class=\"col-lg-1\">", $array["name"],"</td>";
+                        echo "<td class=\"col-lg-3\">", $array["description"],"</td>";
+                        
+                        if(!$array["photo"]){
+                            echo "<td class=\"col-lg-1\">", "Фото нет","</td>";
+                        }else{      
+                            echo "<td>"; ?>
+                            <img src="<?php echo $array['photo'];?>" class="img-rounded img-responsive" alt="No photo" width="300">
+                            <?php echo "</td>";
+                        }
+                        echo "<td class=\"col-lg-3\">", $array["changeFor"],"</td>";
+                        echo "<td class=\"col-lg-1\">","</td>";
+                        echo "<td class=\"col-lg-1\">", $array["dateAndTime"],"</td>";
+                        echo "<form action=\"complaint.html\" method=\"POST\">"; ?>
+                        <td> 
+                            <button type="submit" class="btn btn-danger" name="complaint" value="<?php echo $array['id'] ?>">Пожаловаться</button>
+                        </td>
+                        <?php echo "</form>";
+                        echo"</tr>";
+                    }
+                }
+                ?>
+
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
